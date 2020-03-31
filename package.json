@@ -1,0 +1,25 @@
+{
+  "name": "teaparty",
+  "version": "1.0.0",
+  "description": "signal server for p2p connections in msvr",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worldmaking/teaparty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/worldmaking/teaparty/issues"
+  },
+  "homepage": "https://github.com/worldmaking/teaparty#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "ws": "^7.2.3"
+  }
+}
