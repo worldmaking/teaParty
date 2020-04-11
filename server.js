@@ -114,7 +114,7 @@ wss.on('connection', function connection(ws, req, client) {
       //clients.peers = connections - 1
 
       let clientUpdate = JSON.stringify({
-        cmd: 'network',
+        cmd: 'guestlist',
         data: clients,
         date: Date.now() 
       })
