@@ -64,7 +64,7 @@ wss.on('connection', function connection(ws, req, client) {
         broadcast(addPeer)
 
         network = JSON.stringify({
-          cmd: 'network',
+          cmd: 'guestlist',
           data: clients,
           date: Date.now() 
         })
@@ -95,7 +95,7 @@ wss.on('connection', function connection(ws, req, client) {
       broadcast(msg)
       console.log(d)
 
-      broadcast(addPeer)
+      //broadcast(addPeer)
 
       // remove client info from list of active clients
       delete clients[id]
