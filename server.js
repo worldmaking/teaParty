@@ -128,7 +128,7 @@ wss.on('connection', function connection(ws, req, client) {
 setInterval(() => {
   wss.clients.forEach((client) => {
     client.send(JSON.stringify({
-      cmd: 'network',
+      cmd: 'guestlist',
       data: clients,
       date: Date.now() 
     }))
