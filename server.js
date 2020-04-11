@@ -8,10 +8,14 @@ http.listen(listenPort, function(){
   console.log('listening on ' + listenPort);
 })
 
-let clients = {}
-clients['peers'] = {}
+let clients = {
+  guests: {},
+  headcount: 0,
+  host: null
+
+}
+
 let lookup = {}
-let peers = [];
 let id = 0;
 let connections = 0
 
@@ -42,25 +46,21 @@ wss.on('connection', function connection(ws, req, client) {
 
         lookup[id] = msg.data.username
         lookup[msg.data.username] = id
-        clients[msg.data.username] = msg.data
+        clients.guests[msg.data.username] = msg.data
         let newPeer = msg.data
-        // use this to keep count # of peers on network
+        // use this to keep count # of headcount on network
         tempCounter = 0
         Object.keys(lookup).forEach(function(key){
           tempCounter++
         })
-        clients.peers = tempCounter / 2 // lookup always contains 2 entries per peer
+        clients.headcount = tempCounter / 2 // lookup always contains 2 entries per peer
         
-        if (clients.peers = 1){
-          clients['host'] = msg.data.username
+        if (clients.headcount = 1){
+          clients.host = msg.data.username
         } else {
           //?
         }
-        addPeer = JSON.stringify({
-          cmd: 'addPeer',
-          data: newPeer,
-          date: Date.now() 
-        })
+
         broadcast(addPeer)
 
         network = JSON.stringify({
@@ -69,13 +69,6 @@ wss.on('connection', function connection(ws, req, client) {
           date: Date.now() 
         })
         broadcast(network)
-
-        // msg = JSON.stringify({
-        //   cmd: 'serverMsg',
-        //   data: msg.data.username + ' has connected',
-        //   date: Date.now() 
-        // })
-        // broadcast(msg)
 
         console.log('data', newPeer)
       break;
@@ -101,17 +94,12 @@ wss.on('connection', function connection(ws, req, client) {
       })
       broadcast(msg)
       console.log(d)
-      // send update to graphs
-      addPeer = JSON.stringify({
-        cmd: 'removePeer',
-        data: lookup[id],
-        date: Date.now() 
-      })
+
       broadcast(addPeer)
 
       // remove client info from list of active clients
       delete clients[id]
-      //clients.peers = connections - 1
+      //clients.headcount = connections - 1
 
       let clientUpdate = JSON.stringify({
         cmd: 'guestlist',
