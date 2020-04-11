@@ -51,6 +51,11 @@ wss.on('connection', function connection(ws, req, client) {
         })
         clients.peers = tempCounter / 2 // lookup always contains 2 entries per peer
         
+        if (clients.peers = 1){
+          clients['server'] = msg.data.username
+        } else {
+          //?
+        }
         addPeer = JSON.stringify({
           cmd: 'addPeer',
           data: newPeer,
