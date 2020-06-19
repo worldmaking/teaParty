@@ -9,7 +9,7 @@ http.listen(listenPort, function(){
 })
 
 let clients = {
-  guests: {},
+  pals: {},
   headcount: 0,
   host: null
 
@@ -46,7 +46,7 @@ wss.on('connection', function connection(ws, req, client) {
 
         lookup[id] = msg.data.username
         lookup[msg.data.username] = id
-        clients.guests[msg.data.username] = msg.data
+        clients.pals[msg.data.username] = msg.data
         let newPeer = msg.data
         // use this to keep count # of headcount on network
         tempCounter = 0
@@ -109,12 +109,12 @@ wss.on('connection', function connection(ws, req, client) {
   })
 });
 
-// ping the clients -- solves a bug where heroku broker.js will crash if no response after nn seconds
+// ping the clients -- solves a bug where heroku teaparty will crash if no response after nn seconds
 // so ping all th clients!
 setInterval(() => {
   wss.clients.forEach((client) => {
     client.send(JSON.stringify({
-      cmd: 'guestlist',
+      cmd: 'ping',
       data: clients,
       date: Date.now() 
     }))
