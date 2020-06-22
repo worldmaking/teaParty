@@ -8,7 +8,7 @@ http.listen(listenPort, function(){
   // console.log('listening on ' + listenPort);
 })
 
-let clients = {
+let guestlist = {
   pals: {},
   headcount: 0,
   host: null
@@ -16,7 +16,7 @@ let clients = {
 }
 
 let lookup = {}
-let id = 0;
+// let id = 0;
 
 // custom keepAlive function to detect and handle broken connections
 
@@ -43,7 +43,7 @@ const interval = setInterval(function ping() {
 
 
 wss.on('connection', function connection(ws, req, client) {
-  id = req.headers['sec-websocket-key'];
+  let id = req.headers['sec-websocket-key'];
   // console.log(id)
   ws.isAlive = true;
   ws.on('pong', heartbeat);
@@ -64,19 +64,17 @@ wss.on('connection', function connection(ws, req, client) {
 
         lookup[id] = msg.data.username
         lookup[msg.data.username] = id
-        clients.pals[msg.data.username] = msg.data
+        guestlist.pals[msg.data.username] = msg.data
         // use this to keep count # of headcount on network
         // tempCounter = 0
         // Object.keys(lookup).forEach(function(key){
         //   tempCounter++
         // })
-        clients.headcount = Object.keys(clients.pals).length
-        // clients.headcount = tempCounter / 2 // lookup always contains 2 entries per peer
+        guestlist.headcount = Object.keys(guestlist.pals).length
+        // guestlist.headcount = tempCounter / 2 // lookup always contains 2 entries per peer
         // // console.log('number of clients', clients.headcount)
-        // // console.log('peers', clients)
-
-        if (clients.host === null){
-          clients.host = msg.data.username
+        if (guestlist.host === null){
+          guestlist.host = msg.data.username
         } else {
           //?
         }
@@ -84,13 +82,13 @@ wss.on('connection', function connection(ws, req, client) {
 
         network = JSON.stringify({
           cmd: 'guestlist',
-          data: clients,
+          data: guestlist,
           date: Date.now() 
         })
         broadcast(network)
 
-        // console.log('peers', clients)
-      break;
+        console.log('\nclient update: ', guestlist, '\n\n')
+        break;
 
     
       
@@ -109,7 +107,7 @@ wss.on('connection', function connection(ws, req, client) {
     clearInterval(interval);
     // // console.log('ws id', id)
     let d = lookup[id]
-    delete clients.pals[d]
+    delete guestlist.pals[d]
     // console.log('escorted ' + d + ' from teaparty')
 
     // let msg = JSON.stringify({
@@ -118,22 +116,24 @@ wss.on('connection', function connection(ws, req, client) {
     //   date: Date.now() 
     // })
     // broadcast(msg)
-    // console.log('updated clients', clients)
-    let attendance = Object.keys(clients.pals).length
-    clients.headcount = attendance
-    // remove client info from list of active clients
-    // delete clients[id]
-    //clients.headcount = connections - 1
-    if(clients.headcount === 0){
-      clients.host = null
+    // console.log('updated guestlist', guestlist)
+    let attendance = Object.keys(guestlist.pals).length
+    guestlist.headcount = attendance
+    // remove client info from list of active guestlist
+    // delete guestlist[id]
+    //guestlist.headcount = connections - 1
+    if(guestlist.headcount === 0){
+      guestlist.host = null
+      console.log('\n\nthe party is over\n\n')
+
       return
-    } else if (clients.headcount === 1 || clients.host === d){
+    } else if (guestlist.headcount === 1 || guestlist.host === d){
       // if only one client remains or client that just disconnected was host, automatically assign a new host
-      for (var prop in clients.pals) {
+      for (var prop in guestlist.pals) {
         // object[prop]
         // console.log(prop + ' is now the teaparty host')
         //! for now, randomly select next host:
-        clients.host = prop
+        guestlist.host = prop
         break;
       }
     } else {
@@ -141,21 +141,22 @@ wss.on('connection', function connection(ws, req, client) {
 
     let clientUpdate = JSON.stringify({
       cmd: 'guestlist',
-      data: clients,
+      data: guestlist,
       date: Date.now() 
     })
     broadcast(clientUpdate)
-  
+    console.log('guestlist update', guestlist)
+
   })
 });
 
-// ping the clients -- solves a bug where heroku teaparty will crash if no response after nn seconds
-// so ping all th clients!
+// ping the pals/host -- solves a bug where heroku teaparty will crash if no response after nn seconds
+// so ping all th pals/host!
 setInterval(() => {
   wss.clients.forEach((client) => {
     client.send(JSON.stringify({
       cmd: 'ping',
-      data: clients,
+      data: guestlist,
       date: Date.now() 
     }))
   });
