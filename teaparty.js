@@ -192,7 +192,7 @@ const DEFAULT_PORT = 8082;
 const PORT = (process.env.PORT || DEFAULT_PORT);
  
 createSignalingBroker({
-  port: PORT,
+  port: DEFAULT_PORT,
   onMessage({ room, type, origin, target }) {
     console.log(`[${room}::${type}] ${origin} -> ${target || '<BROADCAST>'}`);
   },
