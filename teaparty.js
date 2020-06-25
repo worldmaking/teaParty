@@ -184,3 +184,16 @@ function updateNetwork(msg){
 function hardReset(){
   
 }
+
+///// webrtc mesh signalling server
+
+const createSignalingBroker = require('coven/server');
+const DEFAULT_PORT = 4000;
+const PORT = +(process.env.PORT || DEFAULT_PORT);
+ 
+createSignalingBroker({
+  port: PORT,
+  onMessage({ room, type, origin, target }) {
+    console.log(`[${room}::${type}] ${origin} -> ${target || '<BROADCAST>'}`);
+  },
+});

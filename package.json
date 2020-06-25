@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/worldmaking/teaparty#readme",
   "dependencies": {
+    "coven": "^0.5.0",
     "express": "^4.17.1",
     "http": "0.0.1-security",
     "public-ip": "^4.0.1",
