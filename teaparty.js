@@ -8,10 +8,15 @@ http.listen(listenPort, function(){
   // console.log('listening on ' + listenPort);
 })
 
+//TODO: once we have multiple hosts running, need a way to acquire their addresses and run status
 let guestlist = {
-  pals: {},
+  pals: {
+    mischmaschHost: {
+      ip: 'mischmasch-host.herokuapp.com'
+    }
+  },
   headcount: 0,
-  host: null
+  host: 'mischmaschHost'
 
 }
 
@@ -73,11 +78,11 @@ wss.on('connection', function connection(ws, req, client) {
         guestlist.headcount = Object.keys(guestlist.pals).length
         // guestlist.headcount = tempCounter / 2 // lookup always contains 2 entries per peer
         // // console.log('number of clients', clients.headcount)
-        if (guestlist.host === null){
-          guestlist.host = msg.data.username
-        } else {
-          //?
-        }
+        // if (guestlist.host === null){
+        //   guestlist.host = msg.data.username
+        // } else {
+        //   //?
+        // }
 
 
         network = JSON.stringify({
