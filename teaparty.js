@@ -127,7 +127,7 @@ wss.on('connection', function connection(ws, req, client) {
     // delete guestlist[id]
     //guestlist.headcount = connections - 1
     if(guestlist.headcount === 0){
-      guestlist.host = null
+      // guestlist.host = null
       console.log('\n\nthe party is over\n\n')
 
       return
