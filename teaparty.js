@@ -129,19 +129,20 @@ wss.on('connection', function connection(ws, req, client) {
     if(guestlist.headcount === 0){
       // guestlist.host = null
       console.log('\n\nthe party is over\n\n')
-
+      // ? msg the deltaWS host (mischmasch-host.herokuapp.com) and tell to store delta history, sceneFile, and then process.exit()?
       return
-    } else if (guestlist.headcount === 1 || guestlist.host === d){
-      // if only one client remains or client that just disconnected was host, automatically assign a new host
-      for (var prop in guestlist.pals) {
-        // object[prop]
-        // console.log(prop + ' is now the teaparty host')
-        //! for now, randomly select next host:
-        guestlist.host = prop
-        break;
-      }
-    } else {
     } 
+    //   else if (guestlist.headcount === 1 || guestlist.host === d){
+    //   // if only one client remains or client that just disconnected was host, automatically assign a new host
+    //   for (var prop in guestlist.pals) {
+    //     // object[prop]
+    //     // console.log(prop + ' is now the teaparty host')
+    //     // for now, randomly select next host:
+    //     guestlist.host = prop
+    //     break;
+    //   }
+    // } else {
+    // } 
 
     let clientUpdate = JSON.stringify({
       cmd: 'guestlist',
@@ -154,7 +155,7 @@ wss.on('connection', function connection(ws, req, client) {
   })
 });
 
-// ping the pals/host -- solves a bug where heroku teaparty will crash if no response after nn seconds
+// ping the pals/host -- solves a bug where heroku apps will crash if no response after nn seconds
 // so ping all th pals/host!
 setInterval(() => {
   wss.clients.forEach((client) => {
@@ -164,7 +165,7 @@ setInterval(() => {
       date: Date.now() 
     }))
   });
-}, 1000);
+}, 3000);
 
 
   function broadcast(msg){
