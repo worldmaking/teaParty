@@ -10,13 +10,12 @@ http.listen(listenPort, function(){
 
 //TODO: once we have multiple hosts running, need a way to acquire their addresses and run status
 let guestlist = {
-  pals: {
-    mischmaschHost: {
-      ip: 'mischmasch-host.herokuapp.com'
-    }
-  },
+  pals: {},
   headcount: 0,
-  host: 'mischmaschHost'
+  host: {
+   name: 'herokuHost',
+   ip: 'mischmasch-host.herokuapp.com'
+  }
 
 }
 
