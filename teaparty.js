@@ -2,6 +2,51 @@ const WebSocket = require('ws');
 const app = require('express')()
 const http = require('http').createServer(app);;
 
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const {config, token} = require('./config.json');
+
+let channel
+client.once('ready', () => {
+  console.log('Ready!');
+  // channel = client.channels.find('name', 'teaparty')
+  // channel.send('the teaparty has started')
+
+  client.channels.cache.get(`698580923960131658`).send(`the teaparty has started`)
+});
+
+client.login(token);
+
+// 698580923960131658
+
+// client.on('message', message => {
+//     // console.log(message.content);
+//     if (message.content === '!ping') {
+//         // send back "Pong." to the channel the message was sent in
+
+//     }
+
+// });
+
+
+// // Create an event listener for new guild members
+// client.on('guildMemberAdd', member => {
+//     // Send the message to a designated channel on a server:
+//     const channel = member.guild.channels.cache.find(ch => ch.name === 'welcome');
+//     // Do nothing if the channel wasn't found on this server
+//     if (!channel) return;
+//     // Send the message, mentioning the member
+//     channel.send(`Welcome to the server, ${member}! We're a loose collective of artists who do internet-based performances.`);
+//     channel.send('Most of our events are open for participation. type ```\!list``` at any time to check the schedule, and click on a link to get involved with that particular event. Like So:');
+//     channel.send('!list')
+    
+//   });
+
+  
+
+
+
+
 let listenPort = (process.env.PORT || 8090)
 const wss = new WebSocket.Server({ 'server': http, clientTracking: true });
 http.listen(listenPort, function(){
@@ -46,7 +91,7 @@ const interval = setInterval(function ping() {
 
 
 
-wss.on('connection', function connection(ws, req, client) {
+wss.on('connection', function connection(ws, req) {
   let id = req.headers['sec-websocket-key'];
   // console.log(id)
   ws.isAlive = true;
@@ -92,6 +137,10 @@ wss.on('connection', function connection(ws, req, client) {
         broadcast(network)
 
         console.log('\nclient update: ', guestlist, '\n\n')
+
+        client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
+
+
         break;
 
     
@@ -126,6 +175,8 @@ wss.on('connection', function connection(ws, req, client) {
     // remove client info from list of active guestlist
     // delete guestlist[id]
     //guestlist.headcount = connections - 1
+    client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
+
     if(guestlist.headcount === 0){
       // guestlist.host = null
       console.log('\n\nthe party is over\n\n')
@@ -189,5 +240,6 @@ function updateNetwork(msg){
 function hardReset(){
   
 }
+
 
 
