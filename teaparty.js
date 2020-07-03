@@ -7,17 +7,17 @@ const client = new Discord.Client();
 const {config, token} = require('./config.json');
 const { argv } = require('yargs');
 
-let channel
-client.once('ready', () => {
-  console.log('Ready!');
-  // channel = client.channels.find('name', 'teaparty')
-  // channel.send('the teaparty has started')
-  if(!argv.l){
-  client.channels.cache.get(`698580923960131658`).send(`the teaparty has started`)
-  }
-});
+// let channel
+// client.once('ready', () => {
+//   console.log('Ready!');
+//   // channel = client.channels.find('name', 'teaparty')
+//   // channel.send('the teaparty has started')
+//   if(!argv.l){
+//   client.channels.cache.get(`698580923960131658`).send(`the teaparty has started`)
+//   }
+// });
 
-client.login(token);
+// client.login(token);
 
 // 698580923960131658
 
@@ -140,9 +140,9 @@ wss.on('connection', function connection(ws, req) {
 
         console.log('\nclient update: ', guestlist, '\n\n')
 
-        if(!argv.l){
-        client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
-        }
+        // if(!argv.l){
+        // client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
+        // }
 
         break;
 
@@ -178,11 +178,11 @@ wss.on('connection', function connection(ws, req) {
     // remove client info from list of active guestlist
     // delete guestlist[id]
     //guestlist.headcount = connections - 1
-    if(!argv.l){
+    // if(!argv.l){
 
     
-    client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
-    }
+    // client.channels.cache.get(`698580923960131658`).send('updated guestlist: ' + Object.keys(guestlist.pals))
+    // }
     if(guestlist.headcount === 0){
       // guestlist.host = null
       console.log('\n\nthe party is over\n\n')
