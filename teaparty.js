@@ -4,7 +4,7 @@ const http = require('http').createServer(app);;
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const {config, token} = require('./config.json');
+// const {config, token} = require('./config.json');
 const { argv } = require('yargs');
 
 // let channel
